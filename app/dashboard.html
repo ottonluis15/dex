@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dex — Painel</title>
+<link rel="stylesheet" href="css/app.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+</head>
+<body>
+<div class="app-layout">
+<aside class="sidebar" id="sidebar">
+<div class="sidebar-logo"><svg class="icon-svg icon-svg-lg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg><h2>Dex</h2></div>
+<nav class="sidebar-nav">
+<div class="sidebar-section">
+<div class="sidebar-section-title">Principal</div>
+<button class="nav-item active" onclick="showSection('dashboard')"><span class="nav-icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>Dashboard</button>
+<button class="nav-item" onclick="showSection('ai-assistant')"><span class="nav-icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2c0 1.1-.9 2-2 2s-2-.9-2-2a2 2 0 0 1 2-2z"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 6c3.31 0 6 2.69 6 6v2H6v-2c0-3.31 2.69-6 6-6z"/></svg></span>Assistente de IA</button>
+<button class="nav-item" onclick="showSection('processos')"><span class="nav-icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></span>Processos<span class="nav-badge" id="cases-count">0</span></button>
+<button class="nav-item" onclick="showSection('clientes')"><span class="nav-icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Clientes</button>
+<button class="nav-item" onclick="showSection('modelos')"><span class="nav-icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>Modelos</button>
+</div>
+<div class="sidebar-section">
+<div class="sidebar-section-title">Gestão</div>
+<button class="nav-item" onclick="showSection('financeiro')"><span class="nav-icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Financeiro</button>
+<button class="nav-item" onclick="showSection('agenda')"><span class="nav-icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg></span>Agenda</button>
+<button class="nav-item" onclick="showSection('equipe')"><span class="nav-icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20a6 6 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/><circle cx="12" cy="12" r="10"/></svg></span>Equipe</button>
+<button class="nav-item" onclick="showSection('mural')"><span class="nav-icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Mural da Equipe</button>
+<button class="nav-item" onclick="showSection('relatórios')"><span class="nav-icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>Relatórios</button>
+</div>
+<div class="sidebar-section">
+<div class="sidebar-section-title">Sistema</div>
+<button class="nav-item" onclick="showSection('notificações')"><span class="nav-icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>Notificações<span class="nav-badge" id="notif-badge" style="display:none">0</span></button>
+<button class="nav-item" onclick="showSection('config')"><span class="nav-icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></span>Configurações</button>
+</div>
+</nav>
+<div class="sidebar-footer">
+<div class="sidebar-user" onclick="showSection('config')">
+<div class="avatar" id="user-avatar"></div>
+<div class="sidebar-user-info"><div class="name" id="user-name"></div><div class="role" id="user-role"></div></div>
+</div>
+</div>
+</aside>
+
+<div class="main-area">
+<header class="header">
+<div class="header-left">
+<button class="btn-icon" onclick="document.getElementById('sidebar').classList.toggle('open')" style="display:none" id="menu-btn"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg></button>
+<div class="flex items-center">
+<h1 class="header-title" id="page-title" style="margin:0">Dashboard</h1>
+<span id="page-greeting" style="font-size:14px;color:var(--text2);margin-left:16px;font-weight:600;"></span>
+</div>
+<div class="header-search" style="margin-left: 20px;">
+  <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+  <input type="text" id="global-search" placeholder="Buscar processos, clientes... (Ctrl+K)" oninput="filterGlobal(this.value)">
+</div>
+</div>
+<div class="header-right">
+<button class="btn-icon" onclick="toggleZenMode()" title="Modo Foco (Alt+F)"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></button>
+<button class="btn-icon" onclick="toggleTheme()" title="Alternar Tema" id="theme-toggle"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></button>
+<button class="btn-icon notification-btn" onclick="showSection('notificações')"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="dot" id="notif-dot" style="display:none"></span></button>
+<button class="btn-icon" onclick="DB.logout()" title="Sair"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></button>
+</div>
+</header>
+<main class="content">
+
+<div class="section" id="sec-ai-assistant">
+<div class="ai-cmd-center">
+  <div class="ai-cmd-header">
+    <h2 class="ai-cmd-title">Como posso te ajudar hoje?</h2>
+    <p class="ai-cmd-subtitle">Busque informações, resuma processos ou organize seus prazos em linguagem natural.</p>
+  </div>
+  <div class="ai-cmd-input-wrapper">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2c0 1.1-.9 2-2 2s-2-.9-2-2a2 2 0 0 1 2-2z"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 6c3.31 0 6 2.69 6 6v2H6v-2c0-3.31 2.69-6 6-6z"/></svg>
+    <input type="text" class="ai-cmd-input" id="cmd-input" placeholder="Ex: Buscar cliente João, Resumir meu processo trabalhista..." onkeypress="if(event.key==='Enter') executeCommand()">
+    <button class="ai-cmd-send" onclick="executeCommand()">
+      <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:translate(-1px,1px)"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+  <div class="ai-cmd-chips">
+    <button class="ai-cmd-chip" onclick="setCommand('Buscar meus prazos de amanhã')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Buscar prazos</button>
+    <button class="ai-cmd-chip" onclick="setCommand('Resumir andamento do processo 123')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Resumir processo</button>
+    <button class="ai-cmd-chip" onclick="setCommand('Mostrar relatório de honorários do mês')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Ver honorários</button>
+  </div>
+  <div class="ai-cmd-results" id="cmd-results"></div>
+  <div class="ai-history" id="ai-history-section" style="display:none"><div class="ai-history-title"><svg class="icon-svg" style="width:14px;height:14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg> Histórico Recente</div><div class="ai-history-list" id="ai-history-list"></div></div>
+</div>
+</div>
+
+<div class="section active" id="sec-dashboard">
+<div class="kpi-grid" id="kpi-grid"></div>
+<div class="grid-2 mt-20">
+<div class="card"><div class="card-header"><h3 class="card-title">Processos por Status</h3></div><div class="chart-container"><canvas id="chartStatus"></canvas></div></div>
+<div class="card"><div class="card-header"><h3 class="card-title">Receitas x Despesas</h3></div><div class="chart-container"><canvas id="chartFinancial"></canvas></div></div>
+</div>
+<div class="grid-2 mt-20">
+<div class="card"><div class="card-header"><h3 class="card-title">Tarefas Rápidas</h3></div>
+<div class="task-input-group" style="padding:0 20px"><input type="text" id="task-input" class="form-input" placeholder="O que precisa ser feito?"><button class="btn btn-primary btn-sm" onclick="addTask()">${ICON.plus}</button></div>
+<div class="task-list" id="task-list" style="padding:0 20px 20px"></div></div>
+<div class="card"><div class="card-header"><h3 class="card-title">Visão do Mês</h3></div><div id="mini-calendar" class="mini-cal" style="padding:10px 20px"></div><div id="health-report" style="margin-top:16px;padding:16px;border-top:1px solid var(--border-light)"></div></div>
+<div class="card"><div class="card-header"><h3 class="card-title">Próximos Prazos</h3></div><div id="upcoming-deadlines"></div></div>
+</div>
+</div>
+
+<div class="section" id="sec-processos">
+<div class="page-header"><div><h2 class="page-title">Processos</h2><p class="page-subtitle">Acervo processual e acompanhamento de casos</p></div><div class="flex gap-8"><button class="btn btn-secondary" onclick="window.print()">🖨️ Imprimir PDF</button><button class="btn btn-primary" onclick="openModal('case-modal')">+ Novo Processo</button></div></div>
+<div class="filters" id="case-filters"></div>
+<div class="card"><div class="table-wrap"><table><thead><tr><th>Processo</th><th>Cliente</th><th>Área</th><th>Tags</th><th>Status</th><th>Responsavel</th><th>Prazo</th><th>Ações</th></tr></thead><tbody id="cases-table"></tbody></table></div></div>
+</div>
+
+<div class="section" id="sec-clientes">
+<div class="page-header"><div><h2 class="page-title">Clientes</h2><p class="page-subtitle">Dossiê e relacionamento com sua carteira de clientes</p></div><div class="flex gap-8"><button class="btn btn-secondary" onclick="window.print()">🖨️ Imprimir PDF</button><button class="btn btn-primary" onclick="openModal('client-modal')">+ Novo Cliente</button></div></div>
+<div class="card"><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Tipo</th><th>CPF/CNPJ</th><th>E-mail</th><th>Telefone</th><th>WhatsApp</th><th>Processos</th><th>Ações</th></tr></thead><tbody id="clients-table"></tbody></table></div></div>
+</div>
+
+<div class="section" id="sec-financeiro">
+<div class="page-header"><div><h2 class="page-title">Financeiro</h2><p class="page-subtitle">Controle de honorários, custas processuais e fluxo de caixa</p></div><button class="btn btn-primary" onclick="openModal('financial-modal')">+ Nova Entrada</button></div>
+<div class="kpi-grid mb-20" id="fin-kpis"></div>
+<div class="card"><div class="table-wrap"><table><thead><tr><th>Descrição</th><th>Tipo</th><th>Valor</th><th>Status</th><th>Vencimento</th><th>Processo</th><th>Ações</th></tr></thead><tbody id="financial-table"></tbody></table></div></div>
+</div>
+
+<div class="section" id="sec-agenda">
+<div class="page-header"><div><h2 class="page-title">Agenda</h2><p class="page-subtitle">Controle de prazos fatais, pautas e compromissos</p></div><button class="btn btn-primary" onclick="openModal('event-modal')">+ Novo Evento</button></div>
+<div class="card">
+<div class="calendar-nav"><button class="btn btn-secondary btn-sm" onclick="changeMonth(-1)">Anterior</button><h3 id="cal-title"></h3><button class="btn btn-secondary btn-sm" onclick="changeMonth(1)">Proximo</button></div>
+<div class="calendar-grid" id="calendar-grid"></div>
+</div>
+<div class="card mt-20"><h3 class="card-title" style="margin-bottom:16px">Eventos do Mês</h3><div id="month-events"></div></div>
+</div>
+
+<div class="section" id="sec-equipe">
+<div class="page-header"><div><h2 class="page-title">Equipe</h2><p class="page-subtitle">Gestão da banca e permissões de acesso</p></div><button class="btn btn-primary" onclick="openModal('team-modal')">+ Convidar Membro</button></div>
+<div class="card"><div class="table-wrap"><table><thead><tr><th>Membro</th><th>E-mail</th><th>Cargo</th><th>OAB</th><th>Status</th><th>Ações</th></tr></thead><tbody id="team-table"></tbody></table></div></div>
+</div>
+
+<div class="section" id="sec-notificações">
+<div class="page-header"><div><h2 class="page-title">Notificações</h2></div><button class="btn btn-secondary btn-sm" onclick="markAllRead()">Marcar todas como lidas</button></div>
+<div id="notif-list"></div>
+</div>
+
+<div class="section" id="sec-config">
+<div class="page-header"><div><h2 class="page-title">Configurações</h2><p class="page-subtitle">Preferências institucionais e dados cadastrais</p></div></div>
+<div class="grid-2">
+<div class="card"><h3 class="card-title" style="margin-bottom:16px">Dados do Escritório</h3><form onsubmit="return saveOfficeConfig(event)">
+<div class="form-group"><label class="form-label">Nome</label><input class="form-input" id="cfg-name"></div>
+<div class="form-group"><label class="form-label">CNPJ</label><input class="form-input" id="cfg-cnpj"></div>
+<div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="cfg-email"></div>
+<div class="form-group"><label class="form-label">Telefone</label><input class="form-input" id="cfg-phone"></div>
+<div class="form-group"><label class="form-label">Endereço</label><input class="form-input" id="cfg-address"></div>
+<div class="form-row"><div class="form-group"><label class="form-label">Área</label><select class="form-select" id="cfg-area"></select></div><div class="form-group"><label class="form-label">Cor da Marca</label><div style="display:flex;gap:12px;align-items:center"><input type="color" id="cfg-color" class="form-input" style="width:60px;padding:2px;height:40px"><span style="font-size:12px;color:var(--text3)">Cor de destaque (Accent)</span></div></div></div>
+<button class="btn btn-primary" type="submit">Salvar Alteracoes</button>
+</form></div>
+<div class="card"><h3 class="card-title" style="margin-bottom:16px">Meu Perfil</h3><form onsubmit="return saveProfile(event)">
+<div class="form-group"><label class="form-label">Nome</label><input class="form-input" id="cfg-uname"></div>
+<div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="cfg-uemail" readonly style="opacity:0.6"></div>
+<div class="form-group"><label class="form-label">OAB</label><input class="form-input" id="cfg-uoab"></div>
+<div class="form-group"><label class="form-label">Telefone</label><input class="form-input" id="cfg-uphone"></div>
+<div class="auth-divider">Alterar Senha</div>
+<div class="form-group"><label class="form-label">Nova Senha</label><input type="password" class="form-input" id="cfg-newpw" placeholder="Deixe em branco para manter"></div>
+<button class="btn btn-primary" type="submit">Salvar Perfil</button>
+</form></div>
+<div class="card"><h3 class="card-title" style="margin-bottom:16px">Backup de Dados</h3>
+<p style="font-size:13px;color:var(--text2);margin-bottom:16px">Exporte ou importe os dados do seu escritório em formato JSON.</p>
+<div class="flex gap-8">
+<button class="btn btn-primary" onclick="exportData()">⬇️ Exportar Dados</button>
+<button class="btn btn-secondary" onclick="document.getElementById('import-file').click()">⬆️ Importar Dados</button>
+<input type="file" id="import-file" style="display:none" accept=".json" onchange="importData(this)">
+</div>
+</div>
+</div>
+</div>
+
+<div class="section" id="sec-case-detail">
+<div class="page-header"><div><button class="btn btn-secondary btn-sm" onclick="showSection('processos')">Voltar</button><h2 class="page-title mt-20" id="case-detail-title"></h2></div></div>
+<div id="case-detail-content"></div>
+</div>
+
+<div class="section" id="sec-modelos">
+<div class="page-header"><div><h2 class="page-title">Modelos de Documentos</h2><p class="page-subtitle">Padronização de peças, procurações e contratos</p></div><button class="btn btn-primary" onclick="openPowerfulEditor(null)">+ Criar Documento (Dex Word)</button></div>
+<div class="template-grid" id="template-grid"></div>
+</div>
+
+<div class="section" id="sec-mural">
+<div class="page-header"><div><h2 class="page-title">Mural da Equipe</h2><p class="page-subtitle">Alinhamento estratégico e troca de informações da banca</p></div></div>
+<div class="grid-2">
+<div class="card" style="height:fit-content"><h3 class="card-title" style="margin-bottom:16px">Nova Mensagem</h3><form onsubmit="return saveChatMsg(event)">
+<div class="form-group"><textarea class="form-textarea" id="chat-input" placeholder="Escreva sua mensagem para a equipe..." required rows="4"></textarea></div>
+<button class="btn btn-primary" style="width:100%;justify-content:center" type="submit">Enviar Mensagem</button>
+</form></div>
+<div class="chat-container" id="chat-list"></div>
+</div>
+</div>
+
+<div class="section" id="sec-relatórios">
+<div class="page-header"><div><h2 class="page-title">Relatórios de Produtividade</h2><p class="page-subtitle">Desempenho analítico e volume de demandas</p></div><button class="btn btn-secondary" onclick="window.print()">🖨️ Imprimir PDF</button></div>
+<div class="grid-2">
+<div class="card"><div class="card-header"><h3 class="card-title">Processos por Advogado</h3></div><div class="chart-container"><canvas id="chartLawyers"></canvas></div></div>
+<div class="card"><div class="card-header"><h3 class="card-title">Novos Processos (Últimos 6 meses)</h3></div><div class="chart-container"><canvas id="chartNewCases"></canvas></div></div>
+</div>
+</div>
+
+</main></div></div>
+
+<div class="section" id="sec-editor" style="padding:0;background:var(--bg-secondary);height:100vh;overflow:hidden">
+  <div class="editor-workspace">
+    <div class="editor-header">
+      <div class="flex items-center gap-24" style="flex:1">
+        <button class="btn-icon" onclick="showSection('modelos')"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <h2 id="editor-title" style="margin:0;font-size:18px;white-space:nowrap">Dex Word</h2>
+        
+        <div class="editor-ribbon">
+          <div class="ribbon-group">
+            <button class="ribbon-btn" onclick="formatDoc('bold')" title="Negrito"><strong>B</strong></button>
+            <button class="ribbon-btn" onclick="formatDoc('italic')" title="Itálico"><em>I</em></button>
+            <button class="ribbon-btn" onclick="formatDoc('underline')" title="Sublinhado"><u>U</u></button>
+          </div>
+          <div class="ribbon-divider"></div>
+          <div class="ribbon-group">
+            <button class="ribbon-btn" onclick="formatDoc('justifyLeft')" title="Esquerda"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="17" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="17" y1="18" x2="3" y2="18"></line></svg></button>
+            <button class="ribbon-btn" onclick="formatDoc('justifyCenter')" title="Centralizar"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="10" x2="6" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="18" y1="18" x2="6" y2="18"></line></svg></button>
+            <button class="ribbon-btn" onclick="formatDoc('justifyRight')" title="Direita"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="21" y1="10" x2="7" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="7" y2="18"></line></svg></button>
+            <button class="ribbon-btn" onclick="formatDoc('justifyFull')" title="Justificar"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="21" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="3" y2="18"></line></svg></button>
+          </div>
+          <div class="ribbon-divider"></div>
+          <div class="ribbon-group">
+            <button class="ribbon-btn" onclick="formatDoc('insertUnorderedList')" title="Lista">•</button>
+            <button class="ribbon-btn" onclick="formatDoc('insertOrderedList')" title="Numeração">1.</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex gap-12 items-center">
+        <span id="editor-stats" style="font-size:12px;color:var(--text3);font-weight:600;white-space:nowrap">0 palavras | 0 caracteres</span>
+        <button class="btn btn-primary btn-sm" onclick="saveFromEditor()">Salvar Documento</button>
+      </div>
+    </div>
+    <div class="editor-body">
+      <div class="editor-sidebar">
+        <h4 class="sidebar-title">Campos Dinâmicos</h4>
+        <div class="tpl-toolbar-v">
+          <button type="button" class="tpl-chip" onclick="insertTagEditor('{NOME_CLIENTE}')">👤 Nome Cliente</button>
+          <button type="button" class="tpl-chip" onclick="insertTagEditor('{CPF_CNPJ}')">📄 CPF/CNPJ</button>
+          <button type="button" class="tpl-chip" onclick="insertTagEditor('{ENDERECO}')">📍 Endereço</button>
+          <button type="button" class="tpl-chip" onclick="insertTagEditor('{TELEFONE}')">📞 Telefone</button>
+          <button type="button" class="tpl-chip" onclick="insertTagEditor('{DATA_HOJE}')">📅 Data de Hoje</button>
+        </div>
+        <div class="sidebar-divider"></div>
+        <h4 class="sidebar-title">Importação</h4>
+        <button class="btn btn-secondary btn-sm" style="width:100%" onclick="document.getElementById('editor-import-file').click()">📂 PDF/Word</button>
+        <input type="file" id="editor-import-file" style="display:none" accept=".txt,.md,.docx,.pdf" onchange="handleEditorImport(this)">
+      </div>
+      <div class="editor-main">
+        <div class="editor-paper">
+          <div id="editor-content" contenteditable="true" spellcheck="false" oninput="updateEditorStats()" placeholder="Comece a redigir sua peça jurídica aqui..."></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODALS -->
+<div class="modal-overlay" id="case-modal"><div class="modal"><div class="modal-header"><h3 class="modal-title">Novo Processo</h3><button class="btn-icon" onclick="closeModal('case-modal')"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+<form onsubmit="return saveCase(event)">
+<div class="form-group"><label class="form-label">Titulo *</label><input class="form-input" id="case-title" required></div>
+<div class="form-row"><div class="form-group"><label class="form-label">Numero</label><input class="form-input" id="case-number" placeholder="0000000-00.0000.0.00.0000"></div><div class="form-group"><label class="form-label">Área *</label><select class="form-select" id="case-area" required></select></div></div>
+<div class="form-row"><div class="form-group"><label class="form-label">Cliente *</label><select class="form-select" id="case-client" required></select></div><div class="form-group"><label class="form-label">Responsavel *</label><select class="form-select" id="case-responsible" required></select></div></div>
+<div class="form-row"><div class="form-group"><label class="form-label">Tribunal</label><input class="form-input" id="case-court"></div><div class="form-group"><label class="form-label">Juiz</label><input class="form-input" id="case-judge"></div></div>
+<div class="form-row"><div class="form-group"><label class="form-label">Valor Estimado</label><input type="number" step="0.01" class="form-input" id="case-value"></div><div class="form-group"><label class="form-label">Prazo</label><input type="date" class="form-input" id="case-deadline"></div></div>
+<div class="form-group"><label class="form-label">Tags (separadas por virgula)</label><input class="form-input" id="case-tags" placeholder="Ex: Urgente, VIP, Criminal"></div>
+<div class="form-group"><label class="form-label">Descrição</label><textarea class="form-textarea" id="case-desc"></textarea></div>
+<div class="form-group"><label class="form-label">Documentos</label><div class="upload-area" onclick="document.getElementById('case-files').click()"><div class="u-icon"><svg class="icon-svg icon-svg-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></div><p style="color:var(--text2);font-size:13px">Clique para anexar documentos</p></div><input type="file" id="case-files" multiple style="display:none" onchange="handleFiles(this)"><div class="file-list" id="file-list"></div></div>
+<button class="btn btn-primary" style="width:100%;justify-content:center" type="submit">Salvar Processo</button>
+</form></div></div>
+
+<div class="modal-overlay" id="client-modal"><div class="modal"><div class="modal-header"><h3 class="modal-title">Novo Cliente</h3><button class="btn-icon" onclick="closeModal('client-modal')"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+<form onsubmit="return saveClient(event)">
+<div class="form-row"><div class="form-group"><label class="form-label">Nome *</label><input class="form-input" id="cl-name" required></div><div class="form-group"><label class="form-label">Tipo *</label><select class="form-select" id="cl-type"><option value="PF">Pessoa Física</option><option value="PJ">Pessoa Jurídica</option></select></div></div>
+<div class="form-row"><div class="form-group"><label class="form-label">CPF/CNPJ</label><input class="form-input" id="cl-doc"></div><div class="form-group"><label class="form-label">E-mail</label><input type="email" class="form-input" id="cl-email"></div></div>
+<div class="form-row"><div class="form-group"><label class="form-label">Telefone</label><input class="form-input" id="cl-phone"></div><div class="form-group"><label class="form-label">Endereço</label><input class="form-input" id="cl-address"></div></div>
+<div class="form-group"><label class="form-label">Observações</label><textarea class="form-textarea" id="cl-notes"></textarea></div>
+<button class="btn btn-primary" style="width:100%;justify-content:center" type="submit">Salvar Cliente</button>
+</form></div></div>
+
+<div class="modal-overlay" id="financial-modal"><div class="modal"><div class="modal-header"><h3 class="modal-title">Nova Entrada Financeira</h3><button class="btn-icon" onclick="closeModal('financial-modal')"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+<form onsubmit="return saveFinancial(event)">
+<div class="form-row"><div class="form-group"><label class="form-label">Tipo *</label><select class="form-select" id="fin-type"><option value="RECEITA">Receita</option><option value="DESPESA">Despesa</option></select></div><div class="form-group"><label class="form-label">Valor *</label><input type="number" step="0.01" min="0.01" class="form-input" id="fin-amount" required></div></div>
+<div class="form-group"><label class="form-label">Descrição *</label><input class="form-input" id="fin-desc" required></div>
+<div class="form-row"><div class="form-group"><label class="form-label">Processo</label><select class="form-select" id="fin-case"><option value="">Nenhum</option></select></div><div class="form-group"><label class="form-label">Vencimento</label><input type="date" class="form-input" id="fin-due"></div></div>
+<button class="btn btn-primary" style="width:100%;justify-content:center" type="submit">Salvar</button>
+</form></div></div>
+
+<div class="modal-overlay" id="event-modal"><div class="modal"><div class="modal-header"><h3 class="modal-title">Novo Evento</h3><button class="btn-icon" onclick="closeModal('event-modal')"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+<form onsubmit="return saveEvent(event)">
+<div class="form-group"><label class="form-label">Titulo *</label><input class="form-input" id="ev-title" required></div>
+<div class="form-row"><div class="form-group"><label class="form-label">Tipo</label><select class="form-select" id="ev-type"><option value="AUDIENCIA">Audiência</option><option value="DESPACHO">Despacho</option><option value="PETICAO">Petição</option><option value="MOVIMENTACAO">Movimentacao</option><option value="NOTA">Nota</option></select></div><div class="form-group"><label class="form-label">Data *</label><input type="datetime-local" class="form-input" id="ev-date" required></div></div>
+<div class="form-group"><label class="form-label">Processo</label><select class="form-select" id="ev-case"><option value="">Nenhum</option></select></div>
+<div class="form-group"><label class="form-label">Descrição</label><textarea class="form-textarea" id="ev-desc"></textarea></div>
+<button class="btn btn-primary" style="width:100%;justify-content:center" type="submit">Salvar Evento</button>
+</form></div></div>
+
+<div class="modal-overlay" id="team-modal"><div class="modal"><div class="modal-header"><h3 class="modal-title">Convidar Membro</h3><button class="btn-icon" onclick="closeModal('team-modal')"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+<form onsubmit="return saveMember(event)">
+<div class="form-group"><label class="form-label">Nome *</label><input class="form-input" id="tm-name" required></div>
+<div class="form-row"><div class="form-group"><label class="form-label">E-mail *</label><input type="email" class="form-input" id="tm-email" required></div><div class="form-group"><label class="form-label">Cargo *</label><select class="form-select" id="tm-role"><option value="LAWYER">Advogado(a)</option><option value="ASSISTANT">Assistente</option><option value="INTERN">Estagiário(a)</option></select></div></div>
+<div class="form-row"><div class="form-group"><label class="form-label">OAB</label><input class="form-input" id="tm-oab"></div><div class="form-group"><label class="form-label">Senha Temporária *</label><input class="form-input" id="tm-pw" required value="Dex@2026"></div></div>
+<button class="btn btn-primary" style="width:100%;justify-content:center" type="submit">Enviar Convite</button>
+</form></div></div>
+
+<div class="modal-overlay" id="template-modal"><div class="modal"><div class="modal-header"><h3 class="modal-title" id="tpl-modal-title">Novo Modelo de Documento</h3><button class="btn-icon" onclick="closeModal('template-modal')"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+<form onsubmit="return saveTemplate(event)">
+<input type="hidden" id="tpl-id">
+<div class="form-group"><label class="form-label">Titulo do Modelo *</label><div style="display:flex;gap:8px"><input class="form-input" id="tpl-title" placeholder="Ex: Procuração Ad Judicia" required style="flex:1"><button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('tpl-import-file').click()">📂 Importar .txt</button><input type="file" id="tpl-import-file" style="display:none" accept=".txt,.md" onchange="importTemplateFile(this)"></div></div>
+<div class="form-group"><label class="form-label">Conteudo do Documento *</label>
+<div class="tpl-toolbar">
+  <button type="button" class="tpl-chip" onclick="insertTag('{NOME_CLIENTE}')">👤 Nome</button>
+  <button type="button" class="tpl-chip" onclick="insertTag('{CPF_CNPJ}')">📄 CPF/CNPJ</button>
+  <button type="button" class="tpl-chip" onclick="insertTag('{ENDERECO}')">📍 Endereço</button>
+  <button type="button" class="tpl-chip" onclick="insertTag('{TELEFONE}')">📞 Telefone</button>
+  <button type="button" class="tpl-chip" onclick="insertTag('{DATA_HOJE}')">📅 Data Hoje</button>
+</div>
+<div class="tpl-editor-container"><textarea class="form-textarea" id="tpl-content" required rows="12" style="font-family:monospace"></textarea></div></div>
+<button class="btn btn-primary" style="width:100%;justify-content:center" type="submit">Salvar Modelo</button>
+</form></div></div>
+
+<div class="modal-overlay" id="use-template-modal"><div class="modal"><div class="modal-header"><h3 class="modal-title">Gerar Documento</h3><button class="btn-icon" onclick="closeModal('use-template-modal')"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+<div class="form-row"><div class="form-group"><label class="form-label">Selecione o Cliente</label><select class="form-select" id="use-tpl-client" onchange="generateDocumentPreview()"></select></div><div class="form-group"><label class="form-label">Vincular a Processo (Opcional)</label><select class="form-select" id="use-tpl-case"></select></div></div>
+<div class="form-group"><label class="form-label">Resultado</label><textarea class="form-textarea" id="use-tpl-result" rows="10" readonly></textarea></div>
+<div class="flex gap-8 mt-20">
+<button class="btn btn-secondary" onclick="copyDocument()" style="flex:1">Copiar Texto</button>
+<button class="btn btn-primary" onclick="saveGeneratedDocToCase()" style="flex:1">📎 Anexar ao Processo</button>
+<button class="btn btn-secondary" onclick="printDocument()" title="Imprimir"><svg class="icon-svg" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
+</div>
+</div></div>
+
+<div class="modal-overlay" id="deadline-modal"><div class="modal"><div class="modal-header"><h3 class="modal-title">Calculadora de Prazos</h3><button class="btn-icon" onclick="closeModal('deadline-modal')"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+<div class="form-group"><label class="form-label">Data Inicial</label><input type="date" class="form-input" id="calc-start-date"></div>
+<div class="form-group"><label class="form-label">Quantidade de Dias</label><input type="number" class="form-input" id="calc-days" placeholder="Ex: 15"></div>
+<div class="form-group"><label class="form-label">Tipo de Contagem</label><select class="form-select" id="calc-type"><option value="UTED">Dias Úteis (CPC)</option><option value="CORR">Dias Corridos</option></select></div>
+<button class="btn btn-primary" style="width:100%;justify-content:center" onclick="calculateDeadline()">Calcular Prazo</button>
+<div id="calc-result" class="calc-result"></div>
+</div></div>
+
+<script src="js/app.js"></script>
+<!-- DEX AI ASSISTANT -->
+<div class="ai-fab" onclick="toggleChatbot()">
+  <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2c0 1.1-.9 2-2 2s-2-.9-2-2a2 2 0 0 1 2-2z"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 6c3.31 0 6 2.69 6 6v2H6v-2c0-3.31 2.69-6 6-6z"/></svg>
+</div>
+<div class="ai-panel" id="dex-chatbot">
+  <div class="ai-header">
+    <div class="ai-title">
+      <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2c0 1.1-.9 2-2 2s-2-.9-2-2a2 2 0 0 1 2-2z"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 6c3.31 0 6 2.69 6 6v2H6v-2c0-3.31 2.69-6 6-6z"/></svg>
+      Dex AI Assistant
+    </div>
+    <button class="btn-icon" onclick="toggleChatbot()" style="width:32px;height:32px">
+      <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="ai-body" id="dex-chatbot-body">
+    <div class="ai-msg system">
+      Olá! Sou o Dex, seu assistente de inteligência artificial jurídica. Como posso ajudar com seus processos hoje?
+    </div>
+  </div>
+  <div class="ai-footer">
+    <input type="text" class="ai-input" id="dex-chatbot-input" placeholder="Faça uma pergunta sobre seus casos..." onkeypress="if(event.key==='Enter') sendChatbotMessage()">
+    <button class="ai-send" onclick="sendChatbotMessage()">
+      <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:translate(-1px,1px)"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  function toggleChatbot() {
+    document.getElementById('dex-chatbot').classList.toggle('active');
+    setTimeout(() => document.getElementById('dex-chatbot-input').focus(), 100);
+  }
+
+  function processAiIntent(text) {
+    text = text.toLowerCase();
+    
+    // [INTENT: NAVIGATION]
+    if(text.includes('ir para') || text.includes('abrir') || text.includes('mostrar')) {
+      if(text.includes('processo')) { showSection('processos'); return "Abrindo a aba de Processos para você."; }
+      if(text.includes('cliente')) { showSection('clientes'); return "Aqui está a sua carteira de Clientes."; }
+      if(text.includes('financeiro') || text.includes('caixa')) { showSection('financeiro'); return "Acessando o controle Financeiro."; }
+      if(text.includes('agenda') || text.includes('prazo')) { showSection('agenda'); return "Abrindo a Agenda do escritório."; }
+      if(text.includes('relatório') || text.includes('metrica')) { showSection('relatórios'); return "Gerando Relatórios de Produtividade."; }
+      if(text.includes('dashboard') || text.includes('inicio')) { showSection('dashboard'); return "Voltando ao Painel Inicial."; }
+    }
+
+    // [INTENT: CREATE CLIENT]
+    const matchClient = text.match(/criar cliente (.+)/i);
+    if(matchClient) {
+      const name = matchClient[1].split(' com')[0].split(' e')[0].trim();
+      const o = O();
+      o.clients.push({id:DB.genId(),name,type:'PF',cpfCnpj:'',email:'',phone:'',address:'',notes:'',createdAt:new Date().toISOString()});
+      DB.saveOffice(o);
+      showSection('clientes');
+      if(typeof loadClients === 'function') loadClients();
+      return `Feito! Cadastrei o cliente "${name}" no sistema.`;
+    }
+    if(text.includes('criar cliente') || text.includes('novo cliente')) {
+      showSection('clientes');
+      openModal('client-modal');
+      return "Abrindo o formulário de novo cliente para você preencher.";
+    }
+
+    // [INTENT: CREATE CASE]
+    if(text.includes('criar processo') || text.includes('novo processo')) {
+      showSection('processos');
+      openModal('case-modal');
+      return "Estou abrindo a tela de Novo Processo. Pode inserir os dados.";
+    }
+
+    // [INTENT: FINANCE]
+    if(text.includes('adicionar receita') || text.includes('adicionar despesa') || text.includes('nova entrada')) {
+      showSection('financeiro');
+      openModal('financial-modal');
+      return "Abrindo o painel financeiro para registrar a nova entrada.";
+    }
+
+    return null;
+  }
+
+  function sendChatbotMessage() {
+    const input = document.getElementById('dex-chatbot-input');
+    const text = input.value.trim();
+    if (!text) return;
+    
+    const body = document.getElementById('dex-chatbot-body');
+    // Add user message
+    body.innerHTML += `<div class="ai-msg user">${text}</div>`;
+    input.value = '';
+    body.scrollTop = body.scrollHeight;
+
+    // Add loading indicator
+    const typingId = 'typing_' + Date.now();
+    body.innerHTML += `<div class="ai-msg system" id="${typingId}">Analisando...</div>`;
+    body.scrollTop = body.scrollHeight;
+
+    // Simulate thinking and API response
+    setTimeout(() => {
+      const typingEl = document.getElementById(typingId);
+      
+      // Try to parse an intent
+      const intentReply = processAiIntent(text);
+      
+      if(intentReply) {
+        typingEl.innerHTML = intentReply;
+      } else {
+        // [DEV API] Integrate LLM API here. 
+        // Aqui o LLM real pode ser chamado via fetch(). Exemplo de Function Calling:
+        // O LLM retornaria um JSON { "action": "navigate", "target": "financeiro" } que você executaria na interface.
+        typingEl.innerHTML = "Entendi o contexto. Esta é uma versão de demonstração da interface. Quando a API de Inteligência Artificial for conectada neste ponto, eu poderei interpretar ações complexas, redigir petições e extrair dados de documentos enviados.";
+      }
+      body.scrollTop = body.scrollHeight;
+    }, 800);
+  }
+</script>
+
+<script src="js/dashboard.js"></script>
+<script src="js/dashboard2.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criar Conta — Dex Advocacia</title>
+<!-- Importação das fontes sugeridas no padrão visual -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg-color: #FAF8F6;
+    --card-bg: #FFFFFF;
+    --text-main: #1A1A1A;
+    --text-muted: #707070;
+    --border-color: #EAEAEA;
+    --primary-color: #262626;
+    --input-bg: #FCFBFA;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 15px;
+    overflow: hidden; /* Evita rolagem na página principal */
+  }
+
+  /* Container expandido para preencher quase toda a tela */
+  .auth-container {
+    background: var(--card-bg);
+    width: 95vw;          /* Ocupa 95% da largura da tela */
+    max-width: 1280px;    /* Limite máximo para telas ultra-wide */
+    height: 90vh;         /* Ocupa 90% da altura da tela */
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+    display: flex;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.02);
+  }
+
+  /* Coluna Esquerda: Marca e Títulos */
+  .auth-sidebar {
+    width: 30%;           /* Espaço reduzido para dar foco ao formulário */
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-right: 1px solid var(--border-color);
+    background-color: #FCFBFA;
+  }
+
+  .auth-logo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 40px;
+  }
+
+  .logo-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-title svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .logo-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .auth-welcome {
+    margin-top: 10px;
+  }
+
+  .auth-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .auth-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* Coluna Direita: Formulário Amplo e sem Scroll */
+  .auth-content {
+    width: 70%;           /* Expandido para preencher melhor a tela horizontalmente */
+    padding: 35px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente eliminando espaços vazios */
+  }
+
+  #registerForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Divisores de Seção mais compactos */
+  .auth-divider {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #A3A3A3;
+    margin: 16px 0 12px 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .auth-divider:first-of-type {
+    margin-top: 0;
+  }
+
+  .auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+    margin-left: 16px;
+  }
+
+  /* Estrutura do Formulário Otimizada */
+  .form-group {
+    margin-bottom: 10px; /* Redução do espaçamento para que caiba na altura vertical */
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-main);
+    margin-bottom: 6px;
+  }
+
+  /* Inputs estilizados com preenchimento interno equilibrado */
+  .form-input, .form-select {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .form-input:focus, .form-select:focus {
+    border-color: #A3A3A3;
+    background-color: #fff;
+  }
+
+  .form-input::placeholder {
+    color: #B5B5B5;
+  }
+
+  /* Botão de Ação */
+  .btn-primary {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    border: none;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: background-color 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #1A1A1A;
+  }
+
+  /* Rodapé */
+  .auth-footer {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .auth-footer a {
+    color: #C29B74;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .auth-footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* Alertas de validação */
+  .alert {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .alert-error {
+    background: #FFF0F0;
+    color: #D32F2F;
+    border: 1px solid #FFD2D2;
+  }
+
+  /* Comportamento responsivo para dispositivos móveis */
+  @media (max-width: 868px) {
+    body {
+      overflow: auto; /* Permite scroll no celular para garantir usabilidade */
+    }
+    .auth-container {
+      flex-direction: column;
+      width: 100%;
+      height: auto;
+    }
+    .auth-sidebar {
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid var(--border-color);
+      padding: 30px 20px;
+    }
+    .auth-content {
+      width: 100%;
+      padding: 30px 20px;
+    }
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="auth-container">
+  
+  <!-- Coluna Esquerda: Identidade Visual -->
+  <div class="auth-sidebar">
+    <div class="auth-logo">
+      <div class="logo-title">
+        <!-- Ícone da Balança em SVG -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+          <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+          <path d="M7 21h10"/>
+          <path d="M12 3v18"/>
+          <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
+        </svg> 
+        Dex
+      </div>
+      <p class="logo-subtitle">Sistema de Advocacia</p>
+    </div>
+    
+    <div class="auth-welcome">
+      <h2 class="auth-title">Crie seu escritório</h2>
+      <p class="auth-subtitle">Preencha os dados para começar</p>
+    </div>
+  </div>
+
+  <!-- Coluna Direita: Inputs e Ações -->
+  <div class="auth-content">
+    <div id="alert" class="alert alert-error" style="display:none"></div>
+    
+    <form id="registerForm" onsubmit="return handleRegister(event)">
+      
+      <div class="auth-divider">Dados do Escritório</div>
+      
+      <div class="form-group">
+        <label class="form-label">Nome do Escritório *</label>
+        <input type="text" class="form-input" id="officeName" placeholder="Ex: Silva & Associados" required>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">CNPJ</label>
+          <input type="text" class="form-input" id="officeCnpj" placeholder="00.000.000/0000-00">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Telefone</label>
+          <input type="text" class="form-input" id="officePhone" placeholder="(00) 00000-0000">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Área Principal *</label>
+          <select class="form-select" id="officeArea" required>
+            <option value="">Selecione a área</option>
+            <option value="CIVIL">Civil</option>
+            <option value="CRIMINAL">Criminal</option>
+            <option value="TRABALHISTA">Trabalhista</option>
+            <option value="TRIBUTARIO">Tributário</option>
+            <option value="FAMILIA">Família</option>
+            <option value="EMPRESARIAL">Empresarial</option>
+            <option value="PREVIDENCIARIO">Previdenciário</option>
+            <option value="AMBIENTAL">Ambiental</option>
+            <option value="CONSUMIDOR">Consumidor</option>
+            <option value="DIGITAL">Digital</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Endereço</label>
+          <input type="text" class="form-input" id="officeAddress" placeholder="Rua, Nº, Cidade/UF">
+        </div>
+      </div>
+      
+      <div class="auth-divider">Dados do Administrador</div>
+      
+      <div class="form-group">
+        <label class="form-label">Nome Completo *</label>
+        <input type="text" class="form-input" id="adminName" placeholder="Seu nome completo" required>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">E-mail *</label>
+          <input type="email" class="form-input" id="adminEmail" placeholder="seu@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">OAB</label>
+          <input type="text" class="form-input" id="adminOab" placeholder="UF000000">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Senha *</label>
+          <input type="password" class="form-input" id="adminPassword" placeholder="Mínimo 6 caracteres" required minlength="6">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirmar Senha *</label>
+          <input type="password" class="form-input" id="adminPasswordConfirm" placeholder="Repita a senha" required>
+        </div>
+      </div>
+      
+      <button type="submit" class="btn-primary">Criar Escritório</button>
+    </form>
+    
+    <div class="auth-footer">Já tem conta? <a href="login.html">Fazer login</a></div>
+  </div>
+
+</div>
+
+<script>
+function genId(){return 'id_'+Math.random().toString(36).substr(2,9)+'_'+Date.now()}
+function handleRegister(e){
+  e.preventDefault();
+  const pw=document.getElementById('adminPassword').value;
+  const pw2=document.getElementById('adminPasswordConfirm').value;
+  if(pw!==pw2){showAlert('As senhas não conferem','error');return false;}
+  const offices=JSON.parse(localStorage.getItem('dex_offices')||'[]');
+  const email=document.getElementById('adminEmail').value;
+  for(const o of offices){if(o.users.some(u=>u.email===email)){showAlert('E-mail já cadastrado','error');return false;}}
+  const officeId=genId(),userId=genId();
+  const office={
+    id:officeId,
+    name:document.getElementById('officeName').value,
+    cnpj:document.getElementById('officeCnpj').value,
+    email:email,
+    phone:document.getElementById('officePhone').value,
+    address:document.getElementById('officeAddress').value,
+    area:document.getElementById('officeArea').value,
+    createdAt:new Date().toISOString(),
+    users:[{id:userId,name:document.getElementById('adminName').value,email:email,password:pw,role:'ADMIN',oab:document.getElementById('adminOab').value,phone:'',avatar:null,isActive:true,createdAt:new Date().toISOString()}],
+    clients:[],cases:[],financial:[],events:[],documents:[],notifications:[{id:genId(),userId:userId,title:'Bem-vindo ao Dex!',message:'Seu escritório foi criado com sucesso. Comece cadastrando seus clientes e processos.',type:'SISTEMA',read:false,createdAt:new Date().toISOString()}],emailLogs:[]
+  };
+  offices.push(office);
+  localStorage.setItem('dex_offices',JSON.stringify(offices));
+  const session={userId,name:office.users[0].name,email,role:'ADMIN',officeId,officeName:office.name};
+  localStorage.setItem('dex_session',JSON.stringify(session));
+  window.location.href='dashboard.html';
+  return false;
+}
+function showAlert(msg,type){const a=document.getElementById('alert');a.style.display='flex';a.innerHTML='<svg style="width:16px;height:16px;flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg> '+msg;}
+</script>
+</body>
+</html>
