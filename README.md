@@ -2,7 +2,7 @@
 
 Sistema para gestão de escritório de advocacia. O projeto hoje combina uma interface HTML/CSS/JS funcional usando `localStorage` com uma base de backend em Next.js, Prisma e NextAuth ainda em processo de integracao.
 
-## Como rodar
+## Como rodarr
 
 ```powershell
 npm.cmd install
